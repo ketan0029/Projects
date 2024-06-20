@@ -1,0 +1,46 @@
+///------------------------Embeded queries
+
+INSERT INTO REGISTER
+INSERT INTO LOGIN
+UPDATE PRODUCT SET STOCK = STOCK-order
+
+///-----------------------TRIGGERS
+
+DELIMITER //
+
+CREATE TRIGGER block_user_after_three_attempts
+BEFORE UPDATE ON login
+FOR EACH ROW
+BEGIN
+    IF NEW.login_attempt = 3 THEN
+        SET NEW.status = 'blocked';
+        SET NEW.login_attempt = 0;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+--- for 3 Login attempt failes
+
+DELIMITER //
+
+CREATE TRIGGER enforce_password_policy
+BEFORE UPDATE ON register
+FOR EACH ROW
+BEGIN
+    DECLARE password_length INT;
+
+    IF NEW.password IS NOT NULL THEN
+        SET password_length = LENGTH(NEW.password);
+        IF password_length < 8 THEN
+            SET NEW.password = NULL;
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Password must be at least 8 characters long';
+        END IF;
+    END IF;
+END //
+
+DELIMITER ;
+
+--- for passwords less than 8 characters

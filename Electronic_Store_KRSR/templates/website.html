@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRSR - Electronics and More</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            background-image: url('https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?cs=srgb&dl=pexels-pixabay-356056.jpg&fm=jpg');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-size: cover;
+            background-position: center;}
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .categoryg {
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 360px;
+            height: 230px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+      
+        .categoryg a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+        .categoryg img {
+            width: 327px;
+            height: 218px;
+            margin-bottom: 10px;
+        }
+        .categoryg p {
+            font-size: 16px;
+        }
+        .cart-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 52px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            object-position: center;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KRSR</h1>
+        <p>Electronics and More</p>
+        <a href="cart" class="cart-icon">&#128722;</a>
+    </header>
+    <div class="container">
+        <div class="categoryg">
+            <a href="television">
+                <img src="{{ url_for('static', filename="Image/Televisions.jpg") }}" alt="Television">
+                Televisions
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="robots">
+                <img src="{{ url_for('static', filename="Image/Robots.jpg") }}" alt="Robots">
+                Robots
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="phone">
+                <img src="{{ url_for('static', filename="Image/Mobile.jpg") }}" alt="Mobiles">
+                Mobiles
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="laptop">
+                <img src="{{ url_for('static', filename="Image/Laptop.jpg") }}" alt="Laptops">
+                Laptops
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="loudspeaker">
+                <img src="{{ url_for('static', filename="Image/LoudSpeaker.jpg") }}" alt="Loud Speakers">
+                Loud Speakers
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="headphone">
+                <img src="{{ url_for('static', filename="Image/Headphones.jpg") }}" alt="Headphones">
+                Headphones
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="fridge">
+                <img src="{{ url_for('static', filename="Image/Fridges.jpg") }}" alt="Fridges">
+                Fridges
+            </a>
+        </div>
+        <div class="categoryg">
+            <a href="ac">
+                <img src="{{ url_for('static', filename="Image/Airconditions.jpg") }}" alt="Air Conditions">
+                Air Conditioners
+            </a>
+        </div>
+    </div>
+</body>
+</html>

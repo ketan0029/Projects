@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Blocked</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?cs=srgb&dl=pexels-pixabay-356056.jpg&fm=jpg');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.8); 
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff0000; 
+        }
+
+        p {
+            color: #555; 
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <a href="website.html" class="back-button">Back</a>
+    <div class="container">
+        <h1>You are Blocked!!</h1>
+        <p>You have tried to attempt login with wrong passcode for 3 times.</p>
+        <h3 id="timer">10</h3>
+    </div>
+    <script>
+        function blockUser(username) {
+            alert("You are blocked for 10 seconds.");
+            startTimer();
+            setTimeout(function() {
+                update_allow(username);
+                window.location.href = "/";
+            }, 10000);
+        }
+        
+        function startTimer() {
+            var timerElement = document.getElementById("timer");
+            var timeLeft = 10;
+            timerElement.innerText = timeLeft;
+            var countdown = setInterval(function() {
+                timeLeft--;
+                timerElement = document.getElementById("timer");
+                timerElement.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                }
+            }, 1000);
+        }
+        
+
+        function update_allow(username) {
+            // Construct the route URL
+            const route = "/blocked/" + username;
+        
+            // Prepare the data to be sent
+            const data = { username: username };
+        
+            // Options for the fetch request
+            const options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+            console.log(username);
+            console.log(options);
+            console.log(route);
+            // Send the PUT request to the constructed route
+            fetch(route, options)
+                .then(response => {
+                    // Handle response if needed
+                    if (response.ok) {
+                        console.log('PUT request successful');
+                    } else {
+                        console.error('Error:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        blockUser('{{ username }}');
+      </script>      
+
+</body>
+</html>

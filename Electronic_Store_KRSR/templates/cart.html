@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Add relative positioning */
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .item img {
+            width: 100px;
+            margin-right: 20px;
+            height: 100px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: #888;
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .total span {
+            font-weight: bold;
+        }
+
+        /* Style for the checkout button */
+        #checkout-button {
+            position: absolute;
+            top: calc(100% + 20px);
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #333; /* Add border */
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Add transition for smooth hover effect */
+        }
+
+        #checkout-button:hover {
+            background-color: #555; /* Change background color on hover */
+            border-color: #555; /* Change border color on hover */
+        }
+
+        /* Style for the back button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #333; /* Add border */
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Add transition for smooth hover effect */
+        }
+
+        .back-button:hover {
+            background-color: #555; /* Change background color on hover */
+            border-color: #555; /* Change border color on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shopping Cart</h1>
+    </header>
+    <!-- Back button -->
+    <a href="website" class="back-button">Back</a>
+    <div class="container">
+        {% for item in cart %}
+        <div class="item">
+            <img src="{{ url_for('static', filename=item_image_map[item['name']]) }}" alt="{{ item['name'] }}">
+            <div class="item-details">
+                <div class="item-name">{{ item['name'] }}</div>
+                <div class="item-price">${{ item['price'] }}</div>
+                <div class="item-quantity">Quantity: {{ item['quantity'] }}</div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="total">
+            Total: <span>{{total_price}}</span>
+        </div>
+        <button id="checkout-button">Checkout</button>
+    </div>
+    <script>
+        // Calculate total price dynamically
+        var totalPrice = 0;
+        {% for item in cart %}
+            totalPrice += {{ item['price'] }} * {{ item['quantity'] }};
+        {% endfor %}
+        document.querySelector('.total span').textContent = totalPrice.toFixed(2);
+
+        // Handle checkout button click
+        document.getElementById('checkout-button').addEventListener('click', function() {
+            const cart = {{ cart | tojson }};
+            console.log('Checkout button clicked');
+            if (cart.length === 0) {
+                alert('Cart is empty');
+                window.location.href = '/website';
+            }
+            fetch('/cart', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cart) // Send cart data as JSON
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to checkout');
+                }
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
